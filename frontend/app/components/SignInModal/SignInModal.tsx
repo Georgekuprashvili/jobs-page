@@ -32,12 +32,15 @@ export default function SignInModal() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: emailVal, password }),
+        credentials: "include", 
       });
 
       const data = await res.json();
 
-      if (res.ok || data.message === "verify email") {
+      if (data.message === "verify email") {
         setStep("verify");
+      } else if (res.ok) {
+        router.push("/");
       } else {
         setError(data.message || "Login failed");
       }
@@ -66,11 +69,13 @@ export default function SignInModal() {
 
       const data = await res.json();
 
-      if (res.ok && data.token) {
+      if (data.message === "verify email") {
+        setStep("verify");
+      } else if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
         router.push("/");
       } else {
-        setError(data.message || "Invalid verification code");
+        setError(data.message || "Login failed");
       }
     } catch (err) {
       setError("Verification failed.");
@@ -87,7 +92,14 @@ export default function SignInModal() {
         body: JSON.stringify({ email }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = { message: text };
+      }
 
       if (!res.ok) {
         setError(data.message || "Failed to resend OTP");
@@ -99,7 +111,6 @@ export default function SignInModal() {
     }
   };
 
-  // Focus on OTP field when it appears
   useEffect(() => {
     if (step === "verify") {
       setTimeout(() => {
