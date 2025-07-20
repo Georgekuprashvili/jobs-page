@@ -6,7 +6,7 @@ import {
   Length,
 } from 'class-validator';
 
-export class SignInDto {
+export class UserSignInDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;

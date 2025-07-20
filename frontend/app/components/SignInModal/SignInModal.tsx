@@ -28,18 +28,20 @@ export default function SignInModal() {
     setEmail(emailVal);
 
     try {
-      const res = await fetch(`${API_BASE}/auth/sign-in`, {
+      // ✅ FIXED: changed from `/auth/sign-in` to `/auth/user/sign-in`
+      const res = await fetch(`${API_BASE}/auth/user/sign-in`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: emailVal, password }),
-        credentials: "include", 
+        credentials: "include",
       });
 
       const data = await res.json();
 
       if (data.message === "verify email") {
         setStep("verify");
-      } else if (res.ok) {
+      } else if (res.ok && data.token) {
+        localStorage.setItem("token", data.token);
         router.push("/");
       } else {
         setError(data.message || "Login failed");
@@ -69,13 +71,11 @@ export default function SignInModal() {
 
       const data = await res.json();
 
-      if (data.message === "verify email") {
-        setStep("verify");
-      } else if (res.ok && data.token) {
+      if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
         router.push("/");
       } else {
-        setError(data.message || "Login failed");
+        setError(data.message || "Verification failed");
       }
     } catch (err) {
       setError("Verification failed.");

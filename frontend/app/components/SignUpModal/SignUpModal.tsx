@@ -22,26 +22,43 @@ export default function SignUpModal() {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
 
-    const payload = {
-      fullName: form.get("name"),
-      email: form.get("email"),
-      password: form.get("password"),
-      age: Number(form.get("age")),
-      type: tab,
-    };
+    let payload: any;
+    let endpoint = "";
 
-    const res = await fetch(`${API_BASE}/auth/sign-up`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      setMessage(data.message || "Signup successful. Check your email.");
+    if (tab === "user") {
+      payload = {
+        fullName: form.get("name"),
+        age: Number(form.get("age")),
+        email: form.get("email"),
+        password: form.get("password"),
+      };
+      endpoint = "/auth/user/sign-up";
     } else {
-      alert(data.message || "Signup failed.");
+      payload = {
+        companyName: form.get("name"),
+        email: form.get("email"),
+        password: form.get("password"),
+        phoneNumber: form.get("phoneNumber") || "000000000",
+      };
+      endpoint = "/auth/company/sign-up";
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage(data.message || "Signup successful. Check your email.");
+      } else {
+        alert(data.message || "Signup failed.");
+      }
+    } catch (err) {
+      alert("Signup request failed.");
     }
   };
 
@@ -82,7 +99,13 @@ export default function SignUpModal() {
                   required
                   className="w-full border px-4 py-2 rounded"
                 />
-
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Phone Number"
+                  required
+                  className="w-full border px-4 py-2 rounded"
+                />
                 <input
                   type="email"
                   name="email"
@@ -97,7 +120,6 @@ export default function SignUpModal() {
                   required
                   className="w-full border px-4 py-2 rounded"
                 />
-
                 <Button type="submit" className="w-full">
                   Register Company
                 </Button>

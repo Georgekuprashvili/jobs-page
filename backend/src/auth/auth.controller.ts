@@ -1,63 +1,50 @@
-import { Response } from 'express';
-
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignUpDto } from './dto/sign-up.dto';
-import { VerifyEmailDTO } from './dto/verify-email.dto';
-import { SignInDto } from './dto/sign-in.dto';
+import { CompanySignInDto } from './dto/company-signin.dto';
+
 import { IsAuthGuard } from './guards/isAuth.guard';
-import { UserId } from 'src/users/decorators/user.decorator';
+import { VerifyEmailDTO } from './dto/verify-email.dto';
+import { UserSignUpDto } from './dto/sign-up.dto';
+import { CompanySignupDto } from './dto/company-signup.dto';
+import { UserSignInDto } from './dto/sign-in.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('sign-up')
-  async signUp(@Body() dto: SignUpDto) {
-    await this.authService.signUp(dto);
-    return { message: 'Check email for verification code' };
+  @Post('company/sign-up')
+  signUpCompany(@Body() dto: CompanySignupDto) {
+    return this.authService.signUpCompany(dto);
+  }
+
+  @Post('company/sign-in')
+  signInCompany(@Body() dto: CompanySignInDto) {
+    return this.authService.signInCompany(dto);
+  }
+
+  @Post('user/sign-up')
+  signUpUser(@Body() dto: UserSignUpDto) {
+    return this.authService.signUpUser(dto);
+  }
+
+  @Post('user/sign-in')
+  signInUser(@Body() dto: UserSignInDto) {
+    return this.authService.signInUser(dto);
   }
 
   @Post('verify-email')
-  verifyEmail(@Body() { email, otpCode }: VerifyEmailDTO) {
-    return this.authService.verifyEmail({ otpCode, email });
+  verifyEmail(@Body() dto: VerifyEmailDTO) {
+    return this.authService.verifyEmail(dto);
   }
 
   @Post('resend-verification-code')
-  verficationCode(@Body('email') email: string) {
-    return this.authService.resendOTPCode(email);
-  }
-  @Post('sign-in')
-  async signIn(
-    @Body() signInDto: SignInDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
-    const result = await this.authService.signIn(signInDto);
-
-    if (result.token) {
-      res.cookie('token', result.token, {
-        httpOnly: true,
-        secure: false, 
-        sameSite: 'lax',
-        maxAge: 3600000, 
-      });
-      return { message: 'success' };
-    }
-
-    return result;
+  resendCode(@Body('email') email: string) {
+    return this.authService.resendOtp(email);
   }
 
-  @Get('current-user')
   @UseGuards(IsAuthGuard)
-  getCurrentUser(@UserId() userId) {
-    return this.authService.getCurrentUser(userId);
+  @Get('company/current')
+  getCurrentCompany(@Req() req) {
+    return this.authService.getCurrentCompany(req.companyId);
   }
 }
