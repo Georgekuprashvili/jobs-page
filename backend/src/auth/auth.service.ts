@@ -64,7 +64,13 @@ export class AuthService {
       return { message: 'verify email' };
     }
 
-    const token = this.jwtService.sign({ id: company._id, role: 'company' });
+    const token = this.jwtService.sign({
+      id: company._id.toString(),
+      email: company.email,
+      fullName: company.companyName,
+      type: 'company',
+    });
+
     return { token };
   }
 
@@ -81,7 +87,13 @@ export class AuthService {
       return { message: 'verify email' };
     }
 
-    const token = this.jwtService.sign({ id: user._id, role: 'user' });
+    const token = this.jwtService.sign({
+      id: user._id.toString(),
+      email: user.email,
+      fullName: user.fullName,
+      type: 'user',
+    });
+
     return { token };
   }
 

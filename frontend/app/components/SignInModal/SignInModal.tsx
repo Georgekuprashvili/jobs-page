@@ -28,7 +28,6 @@ export default function SignInModal() {
     setEmail(emailVal);
 
     try {
-      // ✅ FIXED: changed from `/auth/sign-in` to `/auth/user/sign-in`
       const res = await fetch(`${API_BASE}/auth/user/sign-in`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,7 +41,7 @@ export default function SignInModal() {
         setStep("verify");
       } else if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
-        router.push("/");
+        window.location.href = "/";
       } else {
         setError(data.message || "Login failed");
       }
@@ -73,7 +72,7 @@ export default function SignInModal() {
 
       if (res.ok && data.token) {
         localStorage.setItem("token", data.token);
-        router.push("/");
+        window.location.href = "/";
       } else {
         setError(data.message || "Verification failed");
       }
