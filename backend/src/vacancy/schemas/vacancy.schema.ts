@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Vacancy {
@@ -7,7 +8,13 @@ export class Vacancy {
   @Prop({ required: true }) category: string;
   @Prop({ required: true }) location: string;
   @Prop({ required: true }) salary: number;
-  @Prop({ required: true }) companyId: string;
+  @Prop({ required: true }) companyEmail: string;
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+  })
+  companyId: string;
   @Prop({ default: false }) approved: boolean;
 }
 

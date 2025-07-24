@@ -16,17 +16,34 @@ export default function Navbar() {
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
-  if (loading) return null; 
+  if (loading) return null;
 
   return (
     <header className="flex items-center justify-between px-8 py-4 shadow-sm bg-white">
-      <div className="text-2xl font-bold text-indigo-600">JobsGE</div>
+      <Link href="/" className="text-2xl font-bold text-indigo-600">
+        JobsGE
+      </Link>
 
       <nav className="hidden md:flex space-x-6 text-sm text-gray-700">
-        <Link href="/">მთავარი</Link>
+        <Link href="/pages/home">მთავარი</Link>
         <Link href="/pages/vacancies">ვაკანსიები</Link>
         <Link href="/pages/companies">კომპანიები</Link>
         <Link href="/pages/profile">პროფილი</Link>
+
+        {user?.type === "company" && (
+          <>
+            <Link href="/pages/vacancies/post-vacancy">ვაკანსიის დამატება</Link>
+          </>
+        )}
+
+        {user?.type === "admin" && (
+          <Link
+            href="/pages/admin"
+            className="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700"
+          >
+            Admin
+          </Link>
+        )}
       </nav>
 
       {user ? (
@@ -41,9 +58,6 @@ export default function Navbar() {
           <Dialog open={modalOpen} onOpenChange={setModalOpen}>
             <DialogContent className="max-w-sm">
               <DialogTitle className="text-lg font-medium">პროფილი</DialogTitle>
-              <DialogDescription className="text-sm text-gray-500">
-                აქ შეგიძლიათ ნახოთ თქვენი პროფილის დეტალები.
-              </DialogDescription>
 
               <div className="mt-2 space-y-2 text-sm">
                 <p>

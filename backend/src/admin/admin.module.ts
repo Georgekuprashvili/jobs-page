@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
-import { CompanyModule } from 'src/company/company.module';
-
+import { MongooseModule } from '@nestjs/mongoose';
+import { CompanySchema } from '../company/schemas/company.schema';
+import { VacancySchema } from '../vacancy/schemas/vacancy.schema';
 
 @Module({
-    imports: [CompanyModule],
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'Company', schema: CompanySchema },
+      { name: 'Vacancy', schema: VacancySchema },
+    ]),
+  ],
   controllers: [AdminController],
   providers: [AdminService],
 })

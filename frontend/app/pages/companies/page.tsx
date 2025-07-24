@@ -1,11 +1,12 @@
 import React from "react";
+import CompaniesComp from "../../components/companiescomp/companiescomp"; 
 
-const page = () => {
+const Page = () => {
   return (
-    <div>
-      <h1>companies</h1>
-    </div>
+    <>
+      <CompaniesComp />
+    </>
   );
 };
 
-export default page;
+export default Page;

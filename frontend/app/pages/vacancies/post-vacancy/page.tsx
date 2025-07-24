@@ -1,10 +1,10 @@
 import React from "react";
-import VacanciesPage from "@/app/components/vacancypage/vacancypage";
+import PostVacancyPage from "@/app/components/post-vacancy/postvacancy";
 
 const page = () => {
   return (
     <>
-      <VacanciesPage />
+      <PostVacancyPage />
     </>
   );
 };

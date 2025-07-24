@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule, 
+    ConfigModule,
 
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
@@ -20,7 +20,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ]),
 
     JwtModule.registerAsync({
-      imports: [ConfigModule], 
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         secret: config.get<string>('JWT_SECRET'),
@@ -30,5 +30,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   ],
   controllers: [AuthController],
   providers: [AuthService, IsAuthGuard],
+  exports: [JwtModule, IsAuthGuard],
 })
 export class AuthModule {}

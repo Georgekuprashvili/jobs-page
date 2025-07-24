@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 
 const API_BASE = "http://localhost:3001";
@@ -17,6 +18,7 @@ export default function SignInModal() {
   const [step, setStep] = useState<"login" | "verify">("login");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [tab, setTab] = useState<"user" | "company">("user");
   const otpRef = useRef<HTMLInputElement>(null);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,8 +29,11 @@ export default function SignInModal() {
     const password = form.get("password") as string;
     setEmail(emailVal);
 
+    const endpoint =
+      tab === "user" ? "/auth/user/sign-in" : "/auth/company/sign-in";
+
     try {
-      const res = await fetch(`${API_BASE}/auth/user/sign-in`, {
+      const res = await fetch(`${API_BASE}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: emailVal, password }),
@@ -91,14 +96,7 @@ export default function SignInModal() {
         body: JSON.stringify({ email }),
       });
 
-      const text = await res.text();
-
-      let data: any;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        data = { message: text };
-      }
+      const data = await res.json();
 
       if (!res.ok) {
         setError(data.message || "Failed to resend OTP");
@@ -140,25 +138,60 @@ export default function SignInModal() {
         )}
 
         {step === "login" ? (
-          <form onSubmit={handleLogin} className="space-y-4">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              required
-              className="w-full border px-4 py-2 rounded"
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-              className="w-full border px-4 py-2 rounded"
-            />
-            <Button type="submit" className="w-full">
-              Sign In
-            </Button>
-          </form>
+          <Tabs
+            defaultValue="user"
+            className="w-full"
+            onValueChange={(v) => setTab(v as "user" | "company")}
+          >
+            <TabsList className="grid grid-cols-2 mb-4">
+              <TabsTrigger value="company">Company</TabsTrigger>
+              <TabsTrigger value="user">User</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="company">
+              <form onSubmit={handleLogin} className="space-y-4">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Company Email"
+                  required
+                  className="w-full border px-4 py-2 rounded"
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                  className="w-full border px-4 py-2 rounded"
+                />
+                <Button type="submit" className="w-full">
+                  Sign In as Company
+                </Button>
+              </form>
+            </TabsContent>
+
+            <TabsContent value="user">
+              <form onSubmit={handleLogin} className="space-y-4">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="User Email"
+                  required
+                  className="w-full border px-4 py-2 rounded"
+                />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  required
+                  className="w-full border px-4 py-2 rounded"
+                />
+                <Button type="submit" className="w-full">
+                  Sign In as User
+                </Button>
+              </form>
+            </TabsContent>
+          </Tabs>
         ) : (
           <>
             <form onSubmit={handleVerify} className="space-y-4">

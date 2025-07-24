@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white py-10 px-8">
@@ -8,11 +10,11 @@ export default function Footer() {
         </div>
         <div>
           <h5 className="font-semibold mb-2">სწრაფი ბმულები</h5>
-          <ul className="space-y-1 text-sm">
-            <li>ვაკანსიები</li>
-            <li>კომპანიები</li>
-            <li>ჩვენ შესახებ</li>
-          </ul>
+
+          <div className="flex flex-col">
+            <Link href="/pages/vacancies">ვაკანსიები</Link>
+            <Link href="/pages/companies">კომპანიები</Link>
+          </div>
         </div>
         <div>
           <h5 className="font-semibold mb-2">კონტაქტი</h5>

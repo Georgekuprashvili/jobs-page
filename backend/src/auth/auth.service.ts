@@ -45,7 +45,13 @@ export class AuthService {
     if (exists) throw new BadRequestException('User already exists');
 
     dto.password = await bcrypt.hash(dto.password, 10);
-    await this.userModel.create(dto);
+
+    const isAdmin = dto.email === 'kuprashvilinini9@gmail.com';
+
+    await this.userModel.create({
+      ...dto,
+      type: isAdmin ? 'admin' : 'user',
+    });
 
     await this.sendOtp(dto.email);
     return { message: 'User registered. Please verify email.' };
@@ -91,7 +97,7 @@ export class AuthService {
       id: user._id.toString(),
       email: user.email,
       fullName: user.fullName,
-      type: 'user',
+      type: user.type,
     });
 
     return { token };
@@ -138,7 +144,7 @@ export class AuthService {
       id: string;
       email: string;
       fullName: string;
-      type: 'user' | 'company';
+      type: 'user' | 'company' | 'admin';
     };
 
     if (user) {
@@ -146,7 +152,7 @@ export class AuthService {
         id: user._id.toString(),
         email: user.email,
         fullName: user.fullName,
-        type: 'user',
+        type: user.type as 'user' | 'company' | 'admin',
       };
     } else if (company) {
       tokenPayload = {

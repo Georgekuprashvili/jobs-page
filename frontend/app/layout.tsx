@@ -5,6 +5,7 @@ import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/navbar";
 import "./globals.css";
 import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from "sonner";
 
 export default function RootLayout({
   children,
@@ -12,8 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const hideLayout = ["/pages/sign-in", "/pages/sign-up"];
-  const shouldHideLayout = hideLayout.includes(pathname);
+
+  const hideLayoutRoutes = ["/pages/sign-in", "/pages/sign-up"];
+  const shouldHideLayout = hideLayoutRoutes.includes(pathname);
 
   return (
     <html lang="ka" className="h-full">
@@ -22,6 +24,7 @@ export default function RootLayout({
           {!shouldHideLayout && <Navbar />}
           <main className="flex-grow">{children}</main>
           {!shouldHideLayout && <Footer />}
+          <Toaster />
         </AuthProvider>
       </body>
     </html>

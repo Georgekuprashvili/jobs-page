@@ -10,6 +10,6 @@ import { CompanyService } from './company.service';
   ],
   controllers: [CompanyController],
   providers: [CompanyService],
-  exports: [MongooseModule], 
+  exports: [MongooseModule, CompanyService],
 })
 export class CompanyModule {}
