@@ -10,8 +10,11 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { useProtectedRoute } from "@/app/hooks/useProtectedRoute";
 
 export default function PostVacancyPage() {
+  useProtectedRoute("company");
+
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",

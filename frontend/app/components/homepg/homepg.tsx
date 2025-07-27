@@ -13,6 +13,7 @@ import {
 import JobCard from "@/app/components/jobcard/JobCard";
 import CvUploadModal from "@/app/components/CvUploadModal/CvUploadModal";
 import { getUserFromToken } from "@/app/utils/getUserFromToken";
+import { toast } from "sonner";
 
 export default function VacanciesPage() {
   const [vacancies, setVacancies] = useState<any[]>([]);
@@ -212,7 +213,13 @@ export default function VacanciesPage() {
               </li>
             </ul>
             <Button
-              onClick={() => setCvModalOpen(true)}
+              onClick={() => {
+                if (!user) {
+                  toast.error("გთხოვთ, ჯერ გაიარეთ ავტორიზაცია.");
+                  return;
+                }
+                setCvModalOpen(true);
+              }}
               className="mt-4 bg-green-600 text-white"
             >
               გაგზავნე რეზიუმე

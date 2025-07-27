@@ -2,8 +2,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import api from "@/lib/api";
+import { useProtectedRoute } from "@/app/hooks/useProtectedRoute";
 
 export default function admincomp() {
+  useProtectedRoute("admin");
+
   const { user } = useAuth();
   const [companies, setCompanies] = useState([]);
   const [vacancies, setVacancies] = useState([]);

@@ -1,7 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 
-type DecodedToken = {
+export type DecodedToken = {
   email: string;
+  role: "user" | "company" | "admin"; // ან "string"
   exp: number;
   iat: number;
 };
