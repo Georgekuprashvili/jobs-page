@@ -11,18 +11,21 @@ export default function VacanciesPage() {
   const [selectedVacancy, setSelectedVacancy] = useState<any | null>(null);
   const [cvModalOpen, setCvModalOpen] = useState(false);
   const user = getUserFromToken();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchVacancies = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/approved`
+        `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/approved?page=${page}`
       );
-      const data = await res.json();
-      setVacancies(data);
+      const json = await res.json();
+      setVacancies(json.data);
+      setTotalPages(json.totalPages);
     };
 
     fetchVacancies();
-  }, []);
+  }, [page]);
 
   return (
     <div className="max-w-4xl mx-auto mt-8">
@@ -43,6 +46,25 @@ export default function VacanciesPage() {
             <p className="text-sm font-semibold mt-2">Salary: {v.salary}ლარი</p>
           </div>
         ))}
+        <div className="flex justify-center gap-2 mt-6 pb-[20px]">
+          <Button
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+            className="bg-indigo-600 text-white"
+          >
+            Previous
+          </Button>
+          <span className="flex items-center">
+            {page} / {totalPages}
+          </span>
+          <Button
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => p + 1)}
+            className="bg-indigo-600 text-white"
+          >
+            Next
+          </Button>
+        </div>
       </div>
 
       {selectedVacancy && (

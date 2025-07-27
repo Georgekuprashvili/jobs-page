@@ -5,18 +5,24 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { getUserFromToken, DecodedToken } from "../utils/getUserFromToken";
 
+export type UserRole = "user" | "admin" | "company";
+
 /**
- * @param requiredRole
+  @param requiredRole
  */
-export function useProtectedRoute(requiredRole: string) {
+export function useProtectedRoute(requiredRole: UserRole | UserRole[]) {
   const router = useRouter();
 
   useEffect(() => {
     const user: DecodedToken | null = getUserFromToken();
 
-    if (!user || user.role !== requiredRole) {
+    const roles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+
+    const isAuthorized = user && roles.includes(user.type as UserRole);
+
+    if (!isAuthorized) {
       toast.error("არ გაქვთ წვდომა ამ გვერდზე.");
-      router.push("/pages/sign-in");
+      router.replace("/sign-in");
     }
   }, [requiredRole, router]);
 }

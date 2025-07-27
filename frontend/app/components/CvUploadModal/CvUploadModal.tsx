@@ -3,6 +3,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
+import { CloudUpload } from "lucide-react";
 
 export default function CvUploadModal({
   isOpen,
@@ -48,10 +49,7 @@ export default function CvUploadModal({
       );
 
       toast.success("სივი გაიგზავნა წარმატებით!");
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+      setTimeout(() => window.location.reload(), 1500);
     } catch (err) {
       console.error(err);
       toast.error("დაფიქსირდა შეცდომა გაგზავნისას.");
@@ -62,23 +60,31 @@ export default function CvUploadModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded shadow-lg max-w-md w-full relative">
+      <div className="bg-white p-6 rounded-xl shadow-2xl max-w-md w-full relative">
         <button
           onClick={onClose}
-          className="absolute top-2 right-3 text-xl text-gray-700"
+          className="absolute top-2 right-4 text-2xl text-gray-600 hover:text-gray-800"
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4">CV ატვირთვა</h2>
-        <input
-          type="file"
-          accept=".pdf,.doc,.docx"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="mb-4 w-full cursor-pointer"
-        />
+        <h2 className="text-2xl font-semibold mb-6 text-center">CV ატვირთვა</h2>
+
+        <label className="flex flex-col items-center justify-center border-2 border-dashed border-indigo-400 rounded-xl p-6 mb-4 cursor-pointer hover:bg-indigo-50 transition-colors">
+          <CloudUpload className="w-10 h-10 text-indigo-500 mb-2" />
+          <p className="text-sm text-gray-600">
+            {file ? file.name : "აირჩიეთ  ფაილი"}
+          </p>
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            className="hidden"
+          />
+        </label>
+
         <button
           onClick={handleUpload}
-          className="bg-indigo-600 text-white px-4 py-2 rounded w-full"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded w-full transition-colors"
         >
           გაგზავნა
         </button>

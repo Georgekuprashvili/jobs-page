@@ -11,11 +11,16 @@ export declare class VacancyController {
             __v: number;
         };
     }>;
-    findApproved(): Promise<(import("mongoose").Document<unknown, {}, import("./schemas/vacancy.schema").Vacancy, {}> & import("./schemas/vacancy.schema").Vacancy & {
-        _id: import("mongoose").Types.ObjectId;
-    } & {
-        __v: number;
-    })[]>;
+    findApproved(page: string, limit: string): Promise<{
+        data: (import("mongoose").Document<unknown, {}, import("./schemas/vacancy.schema").Vacancy, {}> & import("./schemas/vacancy.schema").Vacancy & {
+            _id: import("mongoose").Types.ObjectId;
+        } & {
+            __v: number;
+        })[];
+        total: number;
+        page: number;
+        totalPages: number;
+    }>;
     findWithFilters(query: any): Promise<(import("mongoose").Document<unknown, {}, import("./schemas/vacancy.schema").Vacancy, {}> & import("./schemas/vacancy.schema").Vacancy & {
         _id: import("mongoose").Types.ObjectId;
     } & {

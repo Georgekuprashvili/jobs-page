@@ -2,13 +2,14 @@ import { jwtDecode } from "jwt-decode";
 
 export type DecodedToken = {
   email: string;
-  role: "user" | "company" | "admin"; // ან "string"
+  type: "user" | "company" | "admin";
   exp: number;
   iat: number;
 };
 
 export function getUserFromToken(): DecodedToken | null {
   if (typeof window === "undefined") return null;
+
   const token = localStorage.getItem("token");
   if (!token) return null;
 

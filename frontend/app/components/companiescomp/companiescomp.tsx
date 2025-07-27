@@ -34,7 +34,7 @@ export default function companiescomp() {
   }, []);
 
   return (
-    <div className="p-10 max-w-4xl mx-auto">
+    <div className="p-10 max-w-4xl mx-auto mt-[50px]">
       <h1 className="text-2xl font-bold mb-6">კომპანიები:</h1>
 
       {loading ? (

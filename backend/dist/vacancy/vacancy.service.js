@@ -30,8 +30,20 @@ let VacancyService = class VacancyService {
         });
         return { message: 'Vacancy created, pending approval', data: created };
     }
-    async findApproved() {
-        return this.vacancyModel.find({ approved: true }).sort({ createdAt: -1 });
+    async findApproved(page = 1, limit = 6) {
+        const skip = (page - 1) * limit;
+        const vacancies = await this.vacancyModel
+            .find({ approved: true })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+        const total = await this.vacancyModel.countDocuments({ approved: true });
+        return {
+            data: vacancies,
+            total,
+            page,
+            totalPages: Math.ceil(total / limit),
+        };
     }
     async approve(id) {
         if (!(0, mongoose_2.isValidObjectId)(id))

@@ -20,6 +20,7 @@ export default function VacanciesPage() {
   const [filtered, setFiltered] = useState<any[]>([]);
   const [cvModalOpen, setCvModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState<any | null>(null);
+  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
     location: "",
@@ -60,32 +61,54 @@ export default function VacanciesPage() {
   const user = getUserFromToken();
 
   const fetchVacancies = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/approved`
-    );
-    const data = await res.json();
-    setVacancies(data.reverse());
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/approved`
+      );
+      const data = await res.json();
+      setVacancies(data.data.reverse());
+    } catch (err) {
+      toast.error("ვაკანსიების ჩატვირთვის შეცდომა");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchFiltered = async () => {
-    const params = new URLSearchParams();
-    if (filters.search) params.append("search", filters.search);
-    if (filters.location) params.append("location", filters.location);
-    if (filters.category) params.append("category", filters.category);
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (filters.search) params.append("search", filters.search);
+      if (filters.location) params.append("location", filters.location);
+      if (filters.category) params.append("category", filters.category);
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE}/vacancies?${params.toString()}`
-    );
-    const data = await res.json();
-    setFiltered(data);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE}/vacancies?${params.toString()}`
+      );
+      const data = await res.json();
+
+      if (!data || data.length === 0) {
+        toast.error("ვაკანსია ვერ მოიძებნა");
+      }
+      setFiltered(data);
+    } catch (err) {
+      toast.error("ძებნის შეცდომა");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchSingleVacancy = async (id: string) => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/${id}`
-    );
-    const data = await res.json();
-    setSelectedVacancy(data);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/${id}`
+      );
+      const data = await res.json();
+      setSelectedVacancy(data);
+    } catch {
+      toast.error("ვაკანსიის დეტალების მიღება ვერ მოხერხდა");
+    }
   };
 
   useEffect(() => {
@@ -93,7 +116,7 @@ export default function VacanciesPage() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto py-12 px-6">
+    <div className="max-w-7xl mx-auto py-12 px-6 mt-[50px]">
       <h1 className="text-4xl font-extrabold text-center mb-12 text-indigo-700 tracking-tight">
         ვაკანსიების ძებნა
       </h1>
@@ -143,7 +166,9 @@ export default function VacanciesPage() {
         </div>
       </div>
 
-      {filtered.length > 0 && (
+      {loading ? (
+        <p className="text-center text-lg text-gray-500">იტვირთება...</p>
+      ) : filtered.length > 0 ? (
         <section className="mb-16">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">
             ძიების შედეგები
@@ -163,7 +188,7 @@ export default function VacanciesPage() {
             ))}
           </div>
         </section>
-      )}
+      ) : null}
 
       <section>
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">

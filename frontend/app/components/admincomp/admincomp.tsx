@@ -33,7 +33,7 @@ export default function admincomp() {
   };
 
   return (
-    <div className="p-10 space-y-10">
+    <div className="p-10 space-y-10 mt-[50px]">
       <section>
         <h2 className="text-xl font-semibold mb-3">
           მოლოდინში მყოფი კომპანიები
@@ -72,10 +72,10 @@ export default function admincomp() {
                 <strong>ლოკაცია:</strong> {v.location}
               </p>
               <p className="text-sm text-gray-600 mb-1">
-                <strong>ხელფასი:</strong> ${v.salary}
+                <strong>ხელფასი:</strong> {v.salary}ლ
               </p>
               <p className="text-sm text-gray-600 mb-2">
-                <strong>კომპანია:</strong> {v.companyName}
+                <strong>კომპანიის იმეილი:</strong> {v.companyEmail}
               </p>
               <div className="flex gap-3">
                 <button

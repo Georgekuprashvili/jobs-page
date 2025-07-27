@@ -53,7 +53,7 @@ export default function MyVacanciesPage() {
     }
   };
   return (
-    <div className="max-w-4xl mx-auto mt-8 px-4">
+    <div className="max-w-4xl mx-auto  px-4 mt-[50px]">
       <h1 className="text-2xl font-bold mb-6">ჩემი ვაკანსიები</h1>
       {vacancies.length === 0 ? (
         <p>ჯერ არ გაქვს დამატებული ვაკანსიები.</p>

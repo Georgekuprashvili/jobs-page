@@ -23,10 +23,12 @@ export class VacancyController {
   create(@Req() req, @Body() dto: CreateVacancyDto) {
     return this.vacancyService.create(dto, req.user.id);
   }
-
   @Get('approved')
-  findApproved() {
-    return this.vacancyService.findApproved();
+  findApproved(@Query('page') page: string, @Query('limit') limit: string) {
+    return this.vacancyService.findApproved(
+      Number(page) || 1,
+      Number(limit) || 6,
+    );
   }
 
   @Get()

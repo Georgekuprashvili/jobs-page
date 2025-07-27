@@ -15,7 +15,7 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <main className="max-w-2xl mx-auto mt-12 px-4">
+    <main className="max-w-2xl mx-auto  px-4 mt-[100px]">
       <h1 className="text-2xl font-bold mb-4">Ჩემი პროფილი</h1>
 
       <div className="space-y-2">

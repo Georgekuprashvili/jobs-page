@@ -25,8 +25,8 @@ let VacancyController = class VacancyController {
     create(req, dto) {
         return this.vacancyService.create(dto, req.user.id);
     }
-    findApproved() {
-        return this.vacancyService.findApproved();
+    findApproved(page, limit) {
+        return this.vacancyService.findApproved(Number(page) || 1, Number(limit) || 6);
     }
     findWithFilters(query) {
         return this.vacancyService.findWithFilters(query);
@@ -59,8 +59,10 @@ __decorate([
 ], VacancyController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('approved'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], VacancyController.prototype, "findApproved", null);
 __decorate([
