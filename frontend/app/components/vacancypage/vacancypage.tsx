@@ -14,7 +14,9 @@ export default function VacanciesPage() {
 
   useEffect(() => {
     const fetchVacancies = async () => {
-      const res = await fetch("http://localhost:3001/vacancies/approved");
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/approved`
+      );
       const data = await res.json();
       setVacancies(data);
     };

@@ -60,7 +60,9 @@ export default function VacanciesPage() {
   const user = getUserFromToken();
 
   const fetchVacancies = async () => {
-    const res = await fetch(`http://localhost:3001/vacancies/approved`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/approved`
+    );
     const data = await res.json();
     setVacancies(data.reverse());
   };
@@ -72,14 +74,16 @@ export default function VacanciesPage() {
     if (filters.category) params.append("category", filters.category);
 
     const res = await fetch(
-      `http://localhost:3001/vacancies?${params.toString()}`
+      `${process.env.NEXT_PUBLIC_API_BASE}/vacancies?${params.toString()}`
     );
     const data = await res.json();
     setFiltered(data);
   };
 
   const fetchSingleVacancy = async (id: string) => {
-    const res = await fetch(`http://localhost:3001/vacancies/${id}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE}/vacancies/${id}`
+    );
     const data = await res.json();
     setSelectedVacancy(data);
   };

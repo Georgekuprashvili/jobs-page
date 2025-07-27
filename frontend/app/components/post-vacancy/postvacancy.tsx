@@ -37,7 +37,7 @@ export default function PostVacancyPage() {
     setSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:3001/vacancies", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/vacancies`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

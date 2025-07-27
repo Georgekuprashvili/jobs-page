@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 
 export default function CvUploadModal({
   isOpen,
@@ -13,7 +13,7 @@ export default function CvUploadModal({
   isOpen: boolean;
   onClose: () => void;
   companyEmail: string;
-  userEmail: string | null; 
+  userEmail: string | null;
 }) {
   const [file, setFile] = useState<File | null>(null);
 

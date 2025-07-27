@@ -11,7 +11,7 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 
-const API_BASE = "http://localhost:3001";
+const API_BASE = `${process.env.NEXT_PUBLIC_API_BASE}`;
 
 export default function SignUpModal() {
   const router = useRouter();

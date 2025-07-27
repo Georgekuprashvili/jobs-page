@@ -18,7 +18,9 @@ export default function companiescomp() {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await fetch("http://localhost:3001/companies");
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE}/companies`
+        );
         const data = await res.json();
         setCompanies(data);
       } catch (err) {
