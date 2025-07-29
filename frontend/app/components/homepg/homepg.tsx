@@ -76,6 +76,11 @@ export default function VacanciesPage() {
   };
 
   const fetchFiltered = async () => {
+    if (!filters.search && !filters.location && !filters.category) {
+      toast.error("გთხოვთ მიუთითეთ მინიმუმ ერთი კრიტერიუმი");
+      return;
+    }
+
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -91,6 +96,7 @@ export default function VacanciesPage() {
       if (!data || data.length === 0) {
         toast.error("ვაკანსია ვერ მოიძებნა");
       }
+
       setFiltered(data);
     } catch (err) {
       toast.error("ძებნის შეცდომა");
@@ -194,8 +200,8 @@ export default function VacanciesPage() {
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">
           ახალი განცხადებები
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {vacancies.slice(0, 3).map((v) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {vacancies.slice(0, 6).map((v) => (
             <JobCard
               key={v._id}
               title={v.title}

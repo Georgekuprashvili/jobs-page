@@ -40,7 +40,7 @@ let EmailSenderService = class EmailSenderService {
     async sendOTP(to, otpCode) {
         return this.mailerService.sendMail({
             to,
-            from: 'Jobs.ge <noreply@jobspage.com>',
+            from: 'Jobs.ge <jobspage@gmail.com>',
             subject: 'Your OTP Code',
             html: `
       <div style="font-family: Arial, sans-serif; background-color: #ffffff; padding: 30px; border-radius: 10px; max-width: 500px; margin: auto; border: 1px solid #e0e0e0;">

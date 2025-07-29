@@ -22,27 +22,39 @@ export default function RootLayout({
   const shouldHideLayout = hideLayoutRoutes.includes(pathname);
 
   useEffect(() => {
-    const handleStart = () => setLoading(true);
-    const handleStop = () => setLoading(false);
-
-
     setLoading(true);
-    const timeout = setTimeout(() => setLoading(false), 500); 
-
+    const timeout = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timeout);
   }, [pathname]);
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.closest("button")) {
+        setLoading(true);
+        const timeout = setTimeout(() => setLoading(false), 200);
+        return () => clearTimeout(timeout);
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
 
   return (
     <html lang="ka" className="h-full">
       <body className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans relative overflow-x-hidden">
         <AuthProvider>
           {!shouldHideLayout && <Navbar />}
+
           {loading && (
             <div className="fixed inset-0 z-50 bg-white/70 backdrop-blur-sm flex justify-center items-center">
               <div className="animate-spin h-14 w-14 border-4 border-indigo-600 border-t-transparent rounded-full"></div>
             </div>
           )}
+
           <main className="flex-grow">{children}</main>
+
           {!shouldHideLayout && <Footer />}
           <Toaster />
         </AuthProvider>

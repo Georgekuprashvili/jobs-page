@@ -28,7 +28,7 @@ export default function VacanciesPage() {
   }, [page]);
 
   return (
-    <div className="max-w-4xl mx-auto mt-8">
+    <div className="max-w-4xl mx-auto mt-[100px]">
       <h1 className="text-2xl font-bold mb-4">ყველა ვაკანსია</h1>
 
       <div className="space-y-4">
