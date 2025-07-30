@@ -200,7 +200,7 @@ export default function VacanciesPage() {
         <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">
           ახალი განცხადებები
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-[500px]:grid-cols-1">
           {vacancies.slice(0, 6).map((v) => (
             <JobCard
               key={v._id}
